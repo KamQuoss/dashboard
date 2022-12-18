@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsersData } from './features/users/usersSlice';
+import Header from './components/Header';
+import UserList from './components/UserList';
+import { useEffect } from 'react';
+import CircularIndeterminate from './components/CircularIndeterminate';
+
 
 function App() {
+  const dispatch = useDispatch();
+
+  const { isLoading } = useSelector(state => state.users);
+
+  useEffect(() => {
+    dispatch(getUsersData())
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Header title='Dashboard' />
+      {isLoading ? <CircularIndeterminate/> : <UserList />}
+    </Container>
   );
 }
 
